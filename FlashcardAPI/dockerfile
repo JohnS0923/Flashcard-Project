@@ -1,20 +1,24 @@
-# 1. Build Stage
+# 1. Use the SDK image to build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy csproj and restore dependencies
-COPY *.csproj ./
-RUN dotnet restore
+# 2. Copy the csproj from the subfolder to the container
+COPY ["FlashcardAPI/FlashcardAPI.csproj", "FlashcardAPI/"]
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+# 3. Restore dependencies
+RUN dotnet restore "FlashcardAPI/FlashcardAPI.csproj"
 
-# 2. Runtime Stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# 4. Copy everything else and build
+COPY . .
+WORKDIR "/app/FlashcardAPI"
+RUN dotnet build "FlashcardAPI.csproj" -c Release -o /app/build
+
+# 5. Publish
+FROM build AS publish
+RUN dotnet publish "FlashcardAPI.csproj" -c Release -o /app/publish
+
+# 6. Final stage: run the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=build /app/out .
-
-# Expose the port your app runs on (matching your launchSettings)
-EXPOSE 80
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "FlashcardAPI.dll"]
