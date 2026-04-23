@@ -9,51 +9,31 @@ import { API_BASE_URL } from "../config";
 function SignUp() {
   const navigate = useNavigate();
 
-  const [fName, setFName] = useState("j");
-  const [lName, setLName] = useState("j");
-  const [email, setEmail] = useState("j@example.com");
-  const [username, setUsername] = useState("j");
-  const [password, setPassword] = useState("j");
-  const [errorMsg, setErrorMsg] = useState("j");
-
-  // const signUp = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //     if (!fName || !lName || !email || !username || !password) {
-  //       setErrorMsg("Please fill in all the required fields.");
-  //       return;
-  //     }
-
-  //     if (username.length < 5) {
-  //       setErrorMsg("Username must be at least 5 characters long.");
-  //       return;
-  //     }
-
-  //     if (password.length < 8) {
-  //       setErrorMsg("Password must be at least 8 characters long.");
-  //       return;
-  //     }
-
-  //     axios
-  //       .post(`${API_BASE_URL}/Flashcard/SignUp`, {
-  //         email,
-  //         firstName: fName,
-  //         lastName: lName,
-  //         username,
-  //         password,
-  //       })
-  //       .then((res) => {
-  //         setErrorMsg("");
-  //         setGlobalVariable(res.data.userId);
-  //         navigate("../");
-  //       })
-  //       .catch(() => {
-  //         setErrorMsg("Signup failed. Please try again.");
-  //       });
-  //   };
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const signUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!fName || !lName || !email || !username || !password) {
+      setErrorMsg("Please fill in all the required fields.");
+      return;
+    }
+
+    if (username.length < 5) {
+      setErrorMsg("Username must be at least 5 characters long.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setErrorMsg("Password must be at least 8 characters long.");
+      return;
+    }
+
     axios
       .post(`${API_BASE_URL}/Flashcard/SignUp`, {
         email,
@@ -71,6 +51,7 @@ function SignUp() {
         setErrorMsg("Signup failed. Please try again.");
       });
   };
+
   return (
     <>
       <div className="signup-container">
