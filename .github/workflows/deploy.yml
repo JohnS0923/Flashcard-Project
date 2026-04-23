@@ -17,20 +17,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # --- 1. SETUP & RUN UNIT TESTS ---
+# --- 1. SETUP & RUN UNIT TESTS ---
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Restore Dependencies
-        # This tells GitHub to look inside the subfolder for the logic
-        run: dotnet restore FlashcardAPI.sln
+        run: dotnet restore FlashcardAPI.slnx
 
       - name: Run Tests
-        # Adding 'continue-on-error' so if you don't have tests yet, 
-        # it won't stop the Docker build from happening.
-        run: dotnet test FlashcardAPI.sln --no-restore --verbosity normal
+        run: dotnet test FlashcardAPI.slnx --no-restore --verbosity normal
         continue-on-error: true
 
       # --- 2. LOG IN TO GITHUB CONTAINER REGISTRY ---
