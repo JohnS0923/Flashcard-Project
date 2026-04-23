@@ -1,0 +1,355 @@
+:root {
+    --primaryColor: #2a9d8f;     /* teal (main brand color) */
+    --primaryDark: #1f776d;      /* darker teal for hover */
+    --accentColor: #3a86ff;      /* clean blue accent */
+    --lightBg: #f4f9fb;          /* subtle background */
+    --borderColor: #d6e4ea;      /* soft border */
+    --textDark: #1c2b33;         /* professional dark text */
+}
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+main{
+    color: rgb(5, 5, 5);
+}
+.signup-container,
+.login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 30px 25px;
+
+    background: white;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+
+    margin: 80px auto; 
+}
+
+.signup-container {
+    max-width: 480px;
+}
+.center{
+    margin-top: 3%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+.signup-text, .login-text {
+    text-align: center;
+    margin-top: 20px; /* Adjust this to change the gap */
+    color: #555;      /* Optional: makes it look a bit more professional */
+    font-size: 0.9rem;
+}
+
+.signup-text a, .login-text a {
+    color: #007bff;   /* Blue link color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-text a:hover, .login-text a:hover {
+    text-decoration: underline;
+}
+/* display set */
+.center-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.center-btn-container button {
+    background-color: var(--primaryColor);
+    color: white;
+
+    border: none;
+    border-radius: 25px;
+
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(42, 157, 143, 0.25);
+
+    transition: all 0.2s ease-in-out;
+}
+.center-btn-container button:hover {
+    background-color: var(--primaryDark);
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 18px rgba(42, 157, 143, 0.35);
+}
+.center-btn-container button:active {
+    transform: translateY(0px);
+    box-shadow: 0 3px 8px rgba(42, 157, 143, 0.2);
+}
+/* create form */
+.set-form,
+.folder-form {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 30px auto; /* center horizontally */
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.finish-btn {
+    width: 100%;
+    max-width: 500px;
+
+    margin: 20px auto 0 auto;
+
+    display: flex;
+    justify-content: flex-end;
+}
+.finish-btn button {
+    background-color: var(--primaryColor);
+    border: none;
+    padding: 10px 18px;
+
+    border-radius: 25px;
+    color: white;
+    font-weight: 500;
+
+    transition: 0.2s ease;
+}
+
+.finish-btn button:hover {
+    background-color: var(--primaryDark);
+}
+
+
+.flashcard {
+    border: 1px solid var(--borderColor);
+    border-left: 4px solid var(--primaryColor);
+    border-radius: 12px;
+
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.flashcard input {
+    flex: 1;
+    padding: 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+/* header */
+.header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center; 
+    margin-top: 5%;
+  }
+.go-back p{
+    color: black;
+    text-decoration: none ; 
+}
+.go-back a {
+    text-decoration: none;
+    color: black;
+}  
+.centered-h1 {
+justify-self: center; /* Center the h1 within its grid cell */
+margin: 0; /* Remove default margin to ensure accurate centering */
+}
+
+.center-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.buttons{
+    text-align: center;
+    background-color: var(--buttonColor);
+    border-radius: 25px;
+    padding: 1px;
+    padding-top: 7px;
+    width: 130px;
+    height: 40px;
+    cursor: pointer;
+
+}
+
+.card-body:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+    border-left-color: var(--accentColor);
+}
+
+.card-body {
+    background-color: white;
+    border-left: 4px solid var(--primaryColor); 
+
+    border-radius: 12px;
+    padding: 18px;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+
+    transition: all 0.2s ease-in-out;
+}
+.card-body-row{
+    display: grid;
+    grid-template-columns: 1fr .3fr;
+}
+.card-body-row p{
+    padding: 0px;
+    margin: 0px;
+}
+i:hover{
+    cursor: pointer;
+}
+.grid-card{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start; 
+    gap: 10px;
+    justify-content: start;
+}
+.fa-plus:hover,.fa-minus:hover{
+    color: rgb(113, 201, 172);
+}
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--textDark);
+    margin-bottom: 8px;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #5f6f77;
+    margin: 2px 0;
+}
+.card-text span {
+    font-weight: 500;
+    color: var(--primaryDark);
+}
+.container-right{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3%;
+    margin-top: 3%;
+}
+
+/* slides */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  
+  .slides {
+    display: flex;
+    align-items: center; 
+    gap: 15px;
+  }
+  .disable{
+    color: gray;
+  }
+  .slideBottom{
+    display: flex;
+  }
+.fa-gear{
+    position: relative;
+    left: 180px;
+    top: 3px;
+}
+
+.the-card-inner,
+.the-card-front,
+.the-card-back {
+    border-radius: 16px;
+}
+.the-card {
+    border-radius: 16px;
+    overflow: hidden;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border: 1px solid var(--borderColor);
+}
+/*  */
+.set-cards,
+.folder-cards {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.slides {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* animation base */
+.slide-animate {
+    animation-duration: 250ms;
+    animation-timing-function: ease-in-out;
+}
+
+/* whoosh left */
+.slide-left {
+    animation-name: slideLeft;
+}
+
+@keyframes slideLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* whoosh right */
+.slide-right {
+    animation-name: slideRight;
+}
+
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.container-right {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 3%;
+}
+
+.view-select {
+    width: 200px;
+    border-radius: 10px;
+    border: 1px solid var(--primaryColor);
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}

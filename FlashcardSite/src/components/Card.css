@@ -1,0 +1,19 @@
+.card{
+    min-height: 140px;
+}
+.card-container{
+    margin: 0px;
+}
+.card-body p, .card-body h5{
+    margin: 0px;
+}
+.card-container:hover{
+    cursor: pointer;
+}
+.card:hover{
+    background-color: rgb(163, 197, 197);
+}
+
+.align-right{
+    padding-left: 80px;
+}

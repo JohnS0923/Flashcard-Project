@@ -1,0 +1,18 @@
+.flashcard{
+    display: grid;
+    grid-template-columns: .5fr 1fr .1fr;
+    border: 1px solid var(--primaryColor);
+    margin: 20px;
+    padding: 20px;
+}
+.front{
+    border-right: 1px solid rgb(212, 210, 210);
+    margin-right: 10px;
+    font-weight: 700;
+}
+.option{
+    padding-left: 10px;
+}
+.trash-container{
+    text-align: center;
+}

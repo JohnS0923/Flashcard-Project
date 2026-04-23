@@ -1,0 +1,17 @@
+.footer {
+    background-color: var(--primaryColor);
+    color: white;
+
+    padding: 12px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;  
+    justify-content: center; 
+    gap: 15px;
+
+    margin-top: auto;
+
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+}

@@ -1,0 +1,40 @@
+# --- .NET / Visual Studio ---
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docuser
+.vs/
+
+**/Properties/launchSettings.json
+
+# --- Node / React (Vite/Frontend) ---
+node_modules/
+dist/
+dist-ssr/
+build/
+.eslintcache
+*.log
+# Vite specific
+*.local
+
+# --- OS / Editors ---
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# --- Docker ---
+.dockerprod
+docker-compose.override.yml
+
+# --- Environment Secrets ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Databases ---
+*.mdf
+*.ldf

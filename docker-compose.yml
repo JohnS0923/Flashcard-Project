@@ -1,0 +1,38 @@
+services:
+  # 1. The Database Service (SQL Server)
+  db:
+    platform: linux/amd64
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: flashcard-db-1
+    user: root  
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P '${DB_PASSWORD}' -Q 'SELECT 1' -C -No"]
+      interval: 15s     
+      timeout: 10s
+      retries: 15       
+      start_period: 60s 
+
+  # 2. The Backend API (.NET)
+  backend:
+    build: ./FlashcardAPI
+    ports:
+      - "5036:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=FlashcardDB;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 3. The Frontend 
+  frontend:
+    build: ./FlashcardSite
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

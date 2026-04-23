@@ -1,0 +1,26 @@
+name: Build and Push to ECR
+
+on:
+  push:
+    branches: [ "main" ] # Runs when you push to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0'
+
+    - name: Build Backend Image
+      run: |
+        docker build -t flashcard-backend ./FlashcardAPI
+        
+    - name: Build Frontend Image
+      run: |
+        docker build -t flashcard-frontend ./FlashcardSite
