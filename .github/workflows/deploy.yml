@@ -2,26 +2,26 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ] # Runs when you push to main
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ] # Runs when someone opens a PR
+    branches: [ "main" ]
 
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # Crucial for pushing to GHCR
+      packages: write
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-# --- 1. SETUP & RUN UNIT TESTS ---
+      # --- 1. SETUP & RUN UNIT TESTS ---
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: '10.0.x' # Using the current LTS version
 
       - name: Restore Dependencies
         run: dotnet restore FlashcardAPI.slnx
@@ -38,22 +38,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # --- 3. BUILD AND PUSH BACKEND IMAGE ---
+      # --- 3. SET LOWERCASE IMAGE NAMES ---
+      # This step creates a clean variable so we don't have to repeat the 'tr' command
+      - name: Set Image Names
+        run: |
+          LOWER_REPO=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "BACKEND_IMAGE=ghcr.io/$LOWER_REPO-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/$LOWER_REPO-frontend" >> $GITHUB_ENV
+
+      # --- 4. BUILD AND PUSH BACKEND IMAGE ---
       - name: Build and Push Backend
         run: |
-          # Convert username/repo to lowercase for Docker compatibility
-          LOWER_REPO=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          IMAGE_NAME=ghcr.io/$LOWER_REPO-backend
-          
-          # Build using the dockerfile inside FlashcardAPI
-          docker build -t $IMAGE_NAME:latest -f FlashcardAPI/dockerfile .
-          docker push $IMAGE_NAME:latest
+          docker build -t ${{ env.BACKEND_IMAGE }}:latest -f FlashcardAPI/dockerfile .
+          docker push ${{ env.BACKEND_IMAGE }}:latest
 
-      # --- 4. BUILD AND PUSH FRONTEND IMAGE (OPTIONAL) ---
+      # --- 5. BUILD AND PUSH FRONTEND IMAGE ---
       - name: Build and Push Frontend
         run: |
-          LOWER_REPO=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          IMAGE_NAME=ghcr.io/$LOWER_REPO-frontend
-          
-          docker build -t $IMAGE_NAME:latest -f FlashcardSite/dockerfile .
-          docker push $IMAGE_NAME:latest
+          docker build -t ${{ env.FRONTEND_IMAGE }}:latest -f FlashcardSite/dockerfile .
+          docker push ${{ env.FRONTEND_IMAGE }}:latest
