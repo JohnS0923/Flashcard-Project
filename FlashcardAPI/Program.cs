@@ -1,6 +1,6 @@
 using FlashcardAPI.Data;
-using FlashcardAPI.IRepository;  // ADD THIS
-using FlashcardAPI.Repository;   // ADD THIS
+using FlashcardAPI.IRepository;
+using FlashcardAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlashcardAPI
@@ -11,13 +11,22 @@ namespace FlashcardAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1. Get Connection String
+            // 1. Get the connection string template
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            // 2. Add services
+            // 2. Grab the secret password injected by ECS
+            var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+            // 3. Inject the secret into the connection string
+            if (!string.IsNullOrEmpty(dbPassword) && connectionString != null)
+            {
+                connectionString = connectionString.Replace("{DB_PASSWORD}", dbPassword);
+            }
+
+            // 4. Add services
             builder.Services.AddControllers();
 
-            // Register Repository and Context
+            // Register Repository and Context (ONLY ONCE)
             builder.Services.AddScoped<IFlashcard, FlashcardDAL>();
             builder.Services.AddDbContext<FlashcardContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -25,13 +34,13 @@ namespace FlashcardAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // 3. Configure CORS
+            // 5. Configure CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin", policyBuilder =>
                 {
                     policyBuilder
-                        .AllowAnyOrigin() // For testing, allow everything
+                        .AllowAnyOrigin() 
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
@@ -39,7 +48,7 @@ namespace FlashcardAPI
 
             var app = builder.Build();
 
-            // 4. Automated Database Setup
+            // 6. Automated Database Setup
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -55,15 +64,11 @@ namespace FlashcardAPI
                 }
             }
 
-            // 5. Configure the HTTP request pipeline
+            // 7. Configure the HTTP request pipeline
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            if (app.Environment.IsDevelopment())
-            {
-                // Development-specific settings
-            }
-            else
+            if (!app.Environment.IsDevelopment())
             {
                 app.UseHttpsRedirection();
             }
