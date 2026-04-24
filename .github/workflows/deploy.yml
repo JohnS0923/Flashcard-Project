@@ -17,18 +17,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # --- 1. SETUP & RUN UNIT TESTS ---
+      # --- 1. SETUP & RUN UNIT TESTS (BACKEND) ---
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x' # Using the current LTS version
+          dotnet-version: '10.0.x'
 
       - name: Restore Dependencies
         run: dotnet restore FlashcardAPI.slnx
 
       - name: Run Tests
         run: dotnet test FlashcardAPI.slnx --no-restore --verbosity normal
-        continue-on-error: true
+        continue-on-error: true # Prevents pipeline from stopping if tests fail
 
       # --- 2. LOG IN TO GITHUB CONTAINER REGISTRY ---
       - name: Log in to GHCR
@@ -39,7 +39,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # --- 3. SET LOWERCASE IMAGE NAMES ---
-      # This step creates a clean variable so we don't have to repeat the 'tr' command
       - name: Set Image Names
         run: |
           LOWER_REPO=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
@@ -49,11 +48,13 @@ jobs:
       # --- 4. BUILD AND PUSH BACKEND IMAGE ---
       - name: Build and Push Backend
         run: |
+          # Note: Ensure path to dockerfile and context (.) are correct
           docker build -t ${{ env.BACKEND_IMAGE }}:latest -f FlashcardAPI/dockerfile .
           docker push ${{ env.BACKEND_IMAGE }}:latest
 
       # --- 5. BUILD AND PUSH FRONTEND IMAGE ---
       - name: Build and Push Frontend
         run: |
+          # Note: Adjust '-f' if your frontend Dockerfile is named 'Dockerfile' (case sensitive)
           docker build -t ${{ env.FRONTEND_IMAGE }}:latest -f FlashcardSite/dockerfile .
           docker push ${{ env.FRONTEND_IMAGE }}:latest
